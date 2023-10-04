@@ -1,9 +1,10 @@
 #ifndef SRC_LIST_H_
 #define SRC_LIST_H_
-
+#pragma once
 #include <cstddef>
 #include <string>
 #include <ostream>
+
 
 namespace pr {
 

@@ -1,10 +1,9 @@
-#include "List.h"
+//#include "List.h"
 #include <string>
 #include <iostream>
 #include <cstring>
 
 int main () {
-
 	std::string abc = "abc";
 	char * str = new char [3];
 	str[0] = 'a';
@@ -34,5 +33,4 @@ int main () {
 	}
 	// et la chaine elle meme
 	delete str;
-
 }
