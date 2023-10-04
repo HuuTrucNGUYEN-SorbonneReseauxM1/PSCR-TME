@@ -15,7 +15,7 @@ int main () {
 	cout << "Parsing War and Peace" << endl;
 
 	size_t nombre_lu = 0;
-	// prochain mot lu
+	// prochain mot lufsffs
 	string word;
 	// une regex qui reconnait les caractères anormaux (négation des lettres)
 	regex re( R"([^a-zA-Z])");
