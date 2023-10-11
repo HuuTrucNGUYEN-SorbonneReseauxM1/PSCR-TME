@@ -31,4 +31,7 @@ bool Banque::comptabiliser (int attendu) const {
 	}
 	return bilan == attendu;
 }
+int Banque::getSoldeCompte(int i) const{
+	return comptes[i].getSolde();
+}
 }
