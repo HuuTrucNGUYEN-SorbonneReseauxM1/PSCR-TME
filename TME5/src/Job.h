@@ -8,7 +8,7 @@
 #include "Scene.h"
 #include "Vec3D.h"
 #include "Sphere.h"
-#include <main.cpp>
+
 using namespace std;
 
 namespace pr {
