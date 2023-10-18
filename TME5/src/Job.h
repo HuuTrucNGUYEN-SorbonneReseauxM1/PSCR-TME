@@ -1,4 +1,15 @@
 #pragma once
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include "Barrier.h"
+#include "Color.h"
+#include "Rayon.h"
+#include "Scene.h"
+#include "Vec3D.h"
+#include "Sphere.h"
+#include <main.cpp>
+using namespace std;
 
 namespace pr {
 
@@ -8,27 +19,27 @@ public:
 	virtual ~Job() {};
 };
 
-// Job concret : exemple
 
-/**
 class SleepJob : public Job {
 	int calcul (int v) {
-		std::cout << "Computing for arg =" << v << std::endl;
+		cout << "Computing for arg =" << v << endl;
 		// traiter un gros calcul
 		this_thread::sleep_for(1s);
 		int ret = v % 255;
-		std::cout << "Obtained for arg =" << arg <<  " result " << ret << std::endl;
+		cout << "Obtained for arg =" << arg <<  " result " << ret << endl;
 		return ret;
 	}
 	int arg;
 	int * ret;
+	Barrier *barrier;
 public :
-	SleepJob(int arg, int * ret) : arg(arg), ret(ret) {}
+	SleepJob(int arg, int * ret, Barrier *bar) : arg(arg), ret(ret), barrier(bar) {}
 	void run () {
 		* ret = calcul(arg);
+		barrier -> done();
+
 	}
 	~SleepJob(){}
 };
-**/
 
 }

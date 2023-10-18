@@ -10,24 +10,27 @@
 using namespace std;
 using namespace pr;
 
-
-void fillScene(Scene & scene, default_random_engine & re) {
-	// Nombre de spheres (rend le probleme plus dur)
-	const int NBSPHERES = 250;
-
-	// on remplit la scene de spheres colorees de taille position et couleur aleatoire
-	uniform_int_distribution<int> distrib(0, 200);
-	uniform_real_distribution<double> distribd(-200, 200);
-	for (int i = 0; i < NBSPHERES; i++) {
-		// position autour de l'angle de la camera
-		// rayon entre 3 et 33, couleur aleatoire
-		// distrib(re) rend un entier aleatoire extrait de re
-		scene.add(Sphere({50+distribd(re),50 + distribd(re),120 + distribd(re) }, double(distrib(re)%30) + 3.0, Color::random()));
+void fillScene(Scene &scene, default_random_engine &re) {
+	{
+		// Nombre de spheres (rend le probleme plus dur)
+		const int NBSPHERES = 250;
+		// on remplit la scene de spheres colorees de taille position et couleur aleatoire
+		uniform_int_distribution<int> distrib(0, 200);
+		uniform_real_distribution<double> distribd(-200, 200);
+		for (int i = 0; i < NBSPHERES; i++) {
+			// position autour de l'angle de la camera
+			// rayon entre 3 et 33, couleur aleatoire
+			// distrib(re) rend un entier aleatoire extrait de re
+			scene.add(
+					Sphere(
+							{ 50 + distribd(re), 50 + distribd(re), 120
+									+ distribd(re) },
+							double(distrib(re) % 30) + 3.0, Color::random()));
+		}
+		// quelques spheres de plus pour ajouter du gout a la scene
+		scene.add(Sphere( { 50, 50, 40 }, 15.0, Color::red));
+		scene.add(Sphere( { 100, 20, 50 }, 55.0, Color::blue));
 	}
-	// quelques spheres de plus pour ajouter du gout a la scene
-	scene.add(Sphere({50,50,40},15.0,Color::red));
-	scene.add(Sphere({100,20,50},55.0,Color::blue));
-
 }
 
 // return the index of the closest object in the scene that intersects "ray"
