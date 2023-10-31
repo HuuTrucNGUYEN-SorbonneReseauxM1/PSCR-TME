@@ -3,24 +3,29 @@
 #include <chrono>
 #include <thread>
 
+using namespace std::chrono;
 using namespace std;
+using namespace pr;
+const int NB_THREAD = 10;
+int SOLDEINITIAL = 100000;
 
-void transfertWork(pr::Banque &b){
-	::srand(::time(nullptr));
+int transfertWork(Banque &b){
 	for(int boucle = 0; boucle < 1000; boucle++){
-		unsigned int m = rand()%100 + 1;
-		unsigned int i = rand()%b.size() + 1;
-		unsigned int j = rand()%b.size() + 1;
+	    unsigned int m = rand()%100 + 1;
+		size_t i = rand()%b.size() + 1;
+		size_t j = rand()%b.size() + 1;
 		b.transfert(i, j, m);
-		unsigned sleep((rand()%21)/1000);
+		return 0;
+		this_thread::sleep_for(milliseconds(rand() % 21));
 	}
+	return 0;
 }
 
-const int NB_THREAD = 10;
 int main () {
+    ::srand(::time(nullptr));
 	vector<thread> threads;
 	int taille = 100;
-	pr::Banque b(taille,1000);
+	Banque b = Banque(taille,1000);
 	threads.reserve(NB_THREAD);
 	for(int i = 0; i < NB_THREAD; i++){
 		threads.emplace_back(transfertWork,ref(b));
@@ -28,9 +33,12 @@ int main () {
 	for (auto & t : threads) {
 		t.join();
 	}
-
-	for(int i = 0; i < 100 ; i++){
+	int x = 0;
+    for(int i = 0; i < 100 ; i++){
+        x += b.getSoldeCompte(i);
 		cout<<b.getSoldeCompte(i)<<endl;
 	}
+	b.comptabiliser(SOLDEINITIAL);
+	cout<<"\nTotal: "<<x<<endl;
 	return 0;
 }
