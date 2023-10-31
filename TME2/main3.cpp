@@ -4,11 +4,11 @@
 #include <chrono>
 #include <vector>
 
-int main () {
+/*int main () {
 	using namespace std;
 	using namespace std::chrono;
 
-	ifstream input = ifstream("/users/nfs/Etu4/21310174/eclipse-workspace/Test/src/WarAndPeace.txt");
+	ifstream input = ifstream("C:/Users/nguye/eclipse-workspace/TestC++/src/WarAndPeace.txt");
 
 	auto start = steady_clock::now();
 	vector<pair<string,int>> vec;
@@ -65,6 +65,6 @@ int main () {
     cout << "nombre de war = " << war << "\nnombre de peace = " << peace << "\nnombre de toto = " << toto << endl;
 
     return 0;
-}
+}*/
 
 

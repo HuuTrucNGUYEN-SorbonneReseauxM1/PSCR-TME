@@ -8,7 +8,7 @@
 	using namespace std;
 	using namespace std::chrono;
 
-	ifstream input = ifstream("/users/nfs/Etu4/21310174/eclipse-workspace/Test/src/WarAndPeace.txt");
+	ifstream input = ifstream("C:/Users/nguye/eclipse-workspace/TestC++/src/WarAndPeace.txt");
 
 	auto start = steady_clock::now();
 	vector<string> vec; //crée le vecteur
