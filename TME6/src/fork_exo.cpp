@@ -38,30 +38,17 @@ void combat(pid_t adversaire){
 }
 
 int main () {
-	int proc = 0;
-	const int N = 3;
-	std::cout << "main pid=" << getpid() << std::endl;
-	for (int i=1, j=N; i<=N && j==N; i++ ) {
-		if(fork() != 0){
-			proc++;
-			break;
-		}else{
-			proc = 0;
-		}
-		std::cout << " i:j " << i << ":" << j << std::endl;
-		for (int k=1; k<=i && j==N ; k++) {
-			if ( fork() == 0) {
-				proc = 0;
-				j=0;
-				std::cout << " k:j " << k << ":" << j << std::endl;
-			}else{
-				proc++;
-			}
-		}
-	}
-	for(int i = 0 ; i < proc ; i++){
-		int time = wait(nullptr);
-		cout<<"time = "<<time<<endl;
+	pid_t pere = getpid();
+	pid_t fils = fork();
+	srand(fils);
+	if(flis == 0){
+		combat(pere);
+	}else{
+		combat(fils);
 	}
 	return 0;
 }
+/*
+Queston 6
+	Ce n'est pas equtable car l n'y a pas de synchronisatio entre l'attaque et la defense, c'est un combat desordonnee
+*/
