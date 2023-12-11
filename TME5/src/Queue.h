@@ -39,6 +39,7 @@ public:
 		this -> isBlocking = isBlocking;
 		cv.notify_all();
 	}
+	Queue();	
 	T* pop() {
 		std::unique_lock<std::mutex> lg(m);
 		while(empty() && isBlocking){
