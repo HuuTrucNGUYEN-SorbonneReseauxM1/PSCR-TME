@@ -7,36 +7,8 @@
 using namespace std;
 
 int main(int argc, char ** argv){
-	/*int pdesc[2];
-	pid_t pfils;
-	if(pipe(pdesc) == -1){
-		perror("pipe");
-		exit(1);
-	}
-	if((pfils = fork()) == -1){
-		perror("fork");
-		exit(2);
-	}
-	if(pfils == 0){
-		dup2(pdesc[1], STDOUT_FILENO);
-		close(pdesc[1]);
-		close(pdesc[0]);
-		if(execl("/bin/cat", "cat", "pipe.cpp", NULL) == -1){
-			perror("execl");
-			exit(3);
-		}
-	}else{
-		dup2(pdesc[0], STDIN_FILENO);
-		close(pdesc[0]);
-		close(pdesc[1]);
-		if(execl("/bin/wc", "wc", "-l", NULL) == -1){
-			perror("execl");
-			exit(3);
-		}
-	}
-	return EXIT_SUCCESS;*/
 	int pindex = -1;
-	for(int i = 1 ; i < argc ; ++i){
+	for(int i = 1 ; i < argc ; ++i){ //get first command lenght
 		if(string(argv[i]) == "|"){
 			pindex = i;
 			break;
@@ -49,7 +21,7 @@ int main(int argc, char ** argv){
 	}
 
 	int pdesc[2];
-	if(pipe(pdesc) == -1){
+	if(pipe(pdesc) == -1){ 
 		perror("pipe");
 		return 1;
 	}
@@ -61,7 +33,7 @@ int main(int argc, char ** argv){
 		return 1;
 	}
 
-	if(pfils == 0){
+	if(pfils == 0){ //deal with first command 
 		close(pdesc[0]);
 		dup2(pdesc[1], STDOUT_FILENO);
 		close(pdesc[1]);
@@ -71,7 +43,7 @@ int main(int argc, char ** argv){
 
 		execvp(com1[0], com1);
 		perror("execvp");
-	}else{
+	}else{ //deal with second command
 		waitpid(pfils, nullptr, 0);
 		close(pdesc[1]);
 		dup2(pdesc[0], STDIN_FILENO);
