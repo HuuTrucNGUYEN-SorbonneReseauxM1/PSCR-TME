@@ -100,7 +100,38 @@ void exportImage(const char * path, size_t width, size_t height, Color * pixels)
 	// oui ca fait un gros fichier :D
 	img.close();
 }
+class pixelJob:public Job{
+    void run () {
+        // le point de l'ecran par lequel passe ce rayon
+        auto &screenPoint = screen[y][x];
+        // le rayon a inspecter
+        Rayon ray(scene.getCameraPos(), screenPoint);
 
+        int targetSphere = findClosestInter(scene, ray);
+
+        if (targetSphere == -1) {
+            // keep background color
+        } else {
+            const Sphere &obj = *(scene.begin() + targetSphere);
+            // pixel prend la couleur de l'objet
+            Color finalcolor = computeColor(obj, ray, scene.getCameraPos(), lights);
+            // le point de l'image (pixel) dont on vient de calculer la couleur
+            Color &pixel = pixels[y * scene.getHeight() + x];
+            // mettre a jour la couleur du pixel dans l'image finale.
+            pixel = finalcolor;
+        }
+    }
+public:
+    Scene &scene;
+    const Scene::screen_t & screen;
+    int x;
+    int y;
+    vector<Vec3D> &lights;
+    Color * pixels;
+    pixelJob(Scene& _scene,const Scene::screen_t & _screen,int _x,int _y,vector<Vec3D>& _lights,Color * _pixels)
+    :scene(_scene),screen(_screen),x(_x),y(_y),lights(_lights),pixels(_pixels){}
+    ~pixelJob() {}
+};
 // NB : en francais pour le cours, preferez coder en english toujours.
 // pas d'accents pour eviter les soucis d'encodage
 
@@ -127,30 +158,13 @@ int main () {
 
 	// Les couleurs des pixels dans l'image finale
 	Color * pixels = new Color[scene.getWidth() * scene.getHeight()];
-
+	Pool pool(1000);
+    	pool.start(100);
 	// pour chaque pixel, calculer sa couleur
 	for (int x =0 ; x < scene.getWidth() ; x++) {
 		for (int  y = 0 ; y < scene.getHeight() ; y++) {
-			// le point de l'ecran par lequel passe ce rayon
-			auto & screenPoint = screen[y][x];
-			// le rayon a inspecter
-			Rayon  ray(scene.getCameraPos(), screenPoint);
-
-			int targetSphere = findClosestInter(scene, ray);
-
-			if (targetSphere == -1) {
-				// keep background color
-				continue ;
-			} else {
-				const Sphere & obj = *(scene.begin() + targetSphere);
-				// pixel prend la couleur de l'objet
-				Color finalcolor = computeColor(obj, ray, scene.getCameraPos(), lights);
-				// le point de l'image (pixel) dont on vient de calculer la couleur
-				Color & pixel = pixels[y*scene.getHeight() + x];
-				// mettre a jour la couleur du pixel dans l'image finale.
-				pixel = finalcolor;
-			}
-
+			pixelJob * job=new pixelJob(scene,screen,x,y,lights,pixels);
+                	pool.submit(job);
 		}
 	}
 
@@ -160,7 +174,7 @@ int main () {
 	              << "ms.\n";
 
 	exportImage("toto.ppm",scene.getWidth(), scene.getHeight() , pixels);
-
+	pool.stop();
 	return 0;
 }
 
