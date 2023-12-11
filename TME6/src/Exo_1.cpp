@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 int main()
-int proc = 0;
+	int proc = 0;
 	const int N = 3;
 	std::cout << "main pid=" << getpid() << std::endl;
 	for (int i=1, j=N; i<=N && j==N; i++ ) {
